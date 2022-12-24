@@ -1,10 +1,18 @@
-import React from "react";
+import Head from "next/head";
+import React, { Fragment } from "react";
 import PostContent from "../../components/posts/post-details/PostContent";
 import { getPostData, getPostsFiles } from "../../lib/posts-util";
 
 const SinglePostPage = (props) => {
   console.log(props.post);
-  return <PostContent post={props.post} />;
+  return (
+    <Fragment>
+      <Head>
+        <title>{props.post.title}</title>
+      </Head>
+      <PostContent post={props.post} />;
+    </Fragment>
+  );
 };
 
 export async function getStaticProps(context) {
