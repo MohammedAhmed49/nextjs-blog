@@ -3,7 +3,6 @@ import { MongoClient } from "mongodb";
 async function handler(req, res) {
   if (req.method === "POST") {
     const { name, email, message } = JSON.parse(req.body);
-    console.log(req.body);
     if (
       !email ||
       !email.includes("@") ||
@@ -22,8 +21,7 @@ async function handler(req, res) {
       message,
     };
 
-    const url =
-      "mongodb+srv://momo:123@cluster0.z7mqdcq.mongodb.net/?retryWrites=true&w=majority";
+    const url = `mongodb+srv://${process.env.mongodb_username}:${process.env.mongodb_password}@${process.env.mongodb_clusetername}.z7mqdcq.mongodb.net/?retryWrites=true&w=majority`;
 
     let client;
 
@@ -33,7 +31,7 @@ async function handler(req, res) {
       res.status(500).json({ message: "Couldn't connect!" });
     }
 
-    const db = client.db("nextBlog");
+    const db = client.db(process.env.mongodb_database);
     try {
       const result = await db.collection("messages").insertOne(newMessage);
       newMessage.id = result.insertedId;
